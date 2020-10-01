@@ -1,45 +1,108 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
+
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
+/*
+Читаем и пишем в файл: Human
+*/
 public class Solution {
-    public static final List<Person> PEOPLE = new ArrayList<Person>();
+    public static void main(String[] args) {
+        //исправьте outputStream/inputStream в соответствии с путем к вашему реальному файлу
+        try {
+            File your_file_name = File.createTempFile("your_file_name", null);
+            OutputStream outputStream = new FileOutputStream(your_file_name);
+            InputStream inputStream = new FileInputStream(your_file_name);
 
-    public static void main(String[] args) throws IOException, ParseException {
-        BufferedReader reader = new BufferedReader(new FileReader(args[0]));
-        String name="";
-        String date="";
-        String s;
-        int x;
-        String[]ar;
-        while ((s=reader.readLine())!=null){
-            ar=s.split(" ");
-            for (String s1:ar){
-                try {
-                 x= Integer.parseInt(s1);
-                 date+=s1+" ";
-                }catch (NumberFormatException e){
-                    name+=" "+s1;
-                }
+            Human ivanov = new Human("Ivanov", new Asset("home", 999_999.99), new Asset("car", 2999.99));
+            ivanov.save(outputStream);
+            outputStream.flush();
 
-            }
-           name= name.trim();
-            SimpleDateFormat sd = new SimpleDateFormat("dd mm yyyy");
-            Date date1 = new Date();
-            date1=sd.parse(date);
-            PEOPLE.add(new Person(name,date1));
+            Human somePerson = new Human();
+            somePerson.load(inputStream);
+            inputStream.close();
+            //check here that ivanov equals to somePerson - проверьте тут, что ivanov и somePerson равны
 
+        } catch (IOException e) {
+            //e.printStackTrace();
+            System.out.println("Oops, something wrong with my file");
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("Oops, something wrong with save/load method");
         }
-reader.close();
+    }
 
+    public static class Human {
+        public String name;
+        public List<Asset> assets = new ArrayList<>();
 
+        public Human() {
+        }
 
+        public Human(String name, Asset... assets) {
+            this.name = name;
+            if (assets != null) {
+                this.assets.addAll(Arrays.asList(assets));
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Human human = (Human) o;
+
+            if (name != null ? !name.equals(human.name) : human.name != null) return false;
+            return assets != null ? assets.equals(human.assets) : human.assets == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name != null ? name.hashCode() : 0;
+            result = 31 * result + (assets != null ? assets.hashCode() : 0);
+            return result;
+        }
+
+        public void save(OutputStream outputStream) throws Exception {
+            //implement this method - реализуйте этот метод
+        }
+
+        public void load(InputStream inputStream) throws Exception {
+            //implement this method - реализуйте этот метод
+        }
     }
 }                                                  
                                                   
-         
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
